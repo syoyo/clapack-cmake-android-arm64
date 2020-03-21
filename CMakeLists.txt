@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
 project(CLAPACK C)
-enable_testing()
-include(CTest)
+
+option(CLAPACK_ANDROID_BUILD_TESTS "Build unit tests" OFF)
+
+if (CLAPACK_ANDROID_BUILD_TESTS)
+  enable_testing()
+  include(CTest)
+endif (CLAPACK_ANDROID_BUILD_TESTS)
 
 if(WIN32 AND NOT CYGWIN)
   set(SECOND_SRC  ${CLAPACK_SOURCE_DIR}/INSTALL/winsecond.c)
@@ -21,7 +26,10 @@ include_directories(${CLAPACK_SOURCE_DIR}/INCLUDE)
 add_subdirectory(F2CLIBS)
 add_subdirectory(BLAS)
 add_subdirectory(SRC)
-#add_subdirectory(TESTING)
+
+if (CLAPACK_ANDROID_BUILD_TESTS)
+  add_subdirectory(TESTING)
+endif ()
 set(CLAPACK_VERSION 3.2.1)
 set(CPACK_PACKAGE_VERSION_MAJOR 3)
 set(CPACK_PACKAGE_VERSION_MINOR 2)

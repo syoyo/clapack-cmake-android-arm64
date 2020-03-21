@@ -12,6 +12,7 @@ Build clapack for based on clapack-cmake and ndk-build of lapack https://github.
 
 * Android arm64
 * NDK r20 or later(clang compiler)
+* CMake 3.7 or later(cmake from Android SDK(3.10) recommended. In this case, use Android Studio or Android SDK CLI to install cmake)
 
 ## How to compile
 
@@ -22,6 +23,10 @@ $ ./scripts/bootstrap-cmake-anroid.sh
 $ cd build-android
 $ cmake
 ```
+
+### cmake options
+
+`CLAPACK_ANDROID_BUILD_TESTS` : Build unit tests.
 
 ## Link with OpenBLAS
 
