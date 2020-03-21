@@ -1,7 +1,11 @@
 set(MISC 
   f77vers.c i77vers.c main.c s_rnge.c abort_.c exit_.c getarg_.c iargc_.c
   getenv_.c signal_.c s_stop.c s_paus.c system_.c cabs.c ctype.c
-  derf_.c derfc_.c erf_.c erfc_.c sig_die.c uninit.c)
+  derf_.c derfc_.c erf_.c erfc_.c sig_die.c)
+
+# TODO(syoyo): FPU conrol for Android?
+# uninit.c)
+
 set(POW pow_ci.c pow_dd.c pow_di.c pow_hh.c pow_ii.c pow_ri.c pow_zi.c pow_zz.c)
 set(CX 	c_abs.c c_cos.c c_div.c c_exp.c c_log.c c_sin.c c_sqrt.c)
 set(DCX	z_abs.c z_cos.c z_div.c z_exp.c z_log.c z_sin.c z_sqrt.c)
@@ -38,17 +42,17 @@ set(TIME dtime_.c etime_.c)
 
 # For INTEGER*8 support (which requires system-dependent adjustments to
 # f2c.h), add ${QINT} to the OFILES  assignment below...
-add_executable(arithchk arithchk.c)
-if(UNIX)
-  target_link_libraries(arithchk m)
-endif()
-set_target_properties(arithchk PROPERTIES COMPILE_DEFINITIONS 
-  "NO_FPINIT;NO_LONG_LONG")
-ADD_CUSTOM_COMMAND(
-   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/arith.h
-   COMMAND arithchk > ${CMAKE_CURRENT_BINARY_DIR}/arith.h
-   DEPENDS arithchk
-   )
+#add_executable(arithchk arithchk.c)
+#if(UNIX)
+#  target_link_libraries(arithchk m)
+#endif()
+#set_target_properties(arithchk PROPERTIES COMPILE_DEFINITIONS 
+#  "NO_FPINIT;NO_LONG_LONG")
+#ADD_CUSTOM_COMMAND(
+#   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/arith.h
+#   COMMAND arithchk > ${CMAKE_CURRENT_BINARY_DIR}/arith.h
+#   DEPENDS arithchk
+#   )
 
 
 set(OFILES  ${MISC} ${POW} ${CX} ${DCX} ${REAL} ${DBL} ${INT} 
@@ -58,5 +62,8 @@ if(WIN32)
 endif()
 include_directories(${CLAPACK_SOURCE_DIR}/F2CLIBS/libf2c)
 include_directories(${CLAPACK_BINARY_DIR}/F2CLIBS/libf2c)
-add_library(f2c ${OFILES} ${CMAKE_CURRENT_BINARY_DIR}/arith.h)
+#add_library(f2c ${OFILES} ${CMAKE_CURRENT_BINARY_DIR}/arith.h)
+
+# Use manually prepared `arith.h`
+add_library(f2c ${OFILES} arith.h)
 set_property(TARGET f2c PROPERTY PREFIX lib)

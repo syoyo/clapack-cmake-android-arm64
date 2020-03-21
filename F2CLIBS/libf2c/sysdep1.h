@@ -8,9 +8,14 @@
 #define OFF_T off64_t
 #endif
 
+#ifdef ANDROID
+#define USE_LARGEFILE
+#define OFF_T int64_t
+#else
 #ifdef __linux__
 #define USE_LARGEFILE
 #define OFF_T __off64_t
+#endif
 #endif
 
 #ifdef _AIX43
